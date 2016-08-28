@@ -12,7 +12,10 @@ public class ClientFileIO {
 		clientList = new ArrayList<String>();
 		
 		try {
-			FileReader in = new FileReader(filename);
+			// Set up file reading
+			File file = new File(filename);
+						
+			FileReader in = new FileReader(file.getAbsolutePath());
 			
 			// Read the file
 			BufferedReader br = new BufferedReader(in);
