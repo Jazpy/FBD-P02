@@ -5,11 +5,13 @@ import java.io.*;
 
 public class ClientFileIO {
 	private String filename;
-	public ArrayList<String> clientList;
+	private int nextID;
+	public ArrayList<Client> clientList;
 	
 	public ClientFileIO(String filename) {
 		this.filename = filename;
-		clientList = new ArrayList<String>();
+		clientList = new ArrayList<Client>();
+		nextID = 0;
 		
 		try {
 			// Set up file reading
@@ -21,13 +23,14 @@ public class ClientFileIO {
 			BufferedReader br = new BufferedReader(in);
 			String line;
 			
+			// Add to ArrayList
 			while ((line = br.readLine()) != null) {
 				// Tokenize string to read id and name separately
 				StringTokenizer st = new StringTokenizer(line);
 				
-				// Assume first token is id number, we throw it away
-				st.nextToken();
-				
+				// Assume first token is id number
+				nextID = Integer.parseInt(st.nextToken());
+								
 				// Paste together name
 				String name  = "";
 			
@@ -36,11 +39,14 @@ public class ClientFileIO {
 				
 				// Remove trailing space
 				name = name.trim();
+				
+				// Create client
+				Client curr = new Client(nextID, name);
 								
 				// Add the client to the ArrayList, note
 				// that client ID will correspond to
 				// ArrayList index.
-				clientList.add(name);
+				clientList.add(curr);
 			}
 			
 			br.close();
@@ -51,17 +57,73 @@ public class ClientFileIO {
 	}
 	
 	public Client getClient(int id) {
-		return new Client(id, clientList.get(id));
+		Iterator<Client> iter = clientList.iterator();
+		
+		while (iter.hasNext()){
+			Client curr = iter.next();
+			
+			if(curr.getID() == id)
+				return curr;
+		}
+		
+		return null;
 	}
 	
 	public void addClient(String toAdd) {
+		Iterator<Client> iter = clientList.iterator();
 		
-		if(!clientList.contains(toAdd))
-			clientList.add(toAdd);
+		while (iter.hasNext()){
+			
+			if(iter.next().getName().equals(toAdd))
+				return;
+		}
+		
+		Client add = new Client(nextID, toAdd);
+		
+		clientList.add(add);
+		
+		++nextID;
 	}
 	
-	public void removeClient(String toRemove) {
+	public void removeClient(Client toRemove) {
+		if(clientList.get(clientList.size() - 1).equals(toRemove))
+			++nextID;
+		
 		clientList.remove(toRemove);
+	}
+	
+	public void removeClient(int id) {
+		Iterator<Client> iter = clientList.iterator();
+		
+		while (iter.hasNext()){
+			Client curr = iter.next();
+			
+			if(curr.getID() == id) {
+				clientList.remove(curr);
+				
+				if(!iter.hasNext())
+					++nextID;
+					
+				return;
+			}
+		}
+	}
+	
+	public void removeClient(String name) {
+		Iterator<Client> iter = clientList.iterator();
+		
+		while (iter.hasNext()){
+			Client curr = iter.next();
+			
+			if(curr.getName() == name) {
+				clientList.remove(curr);
+				
+				if(!iter.hasNext())
+					++nextID;
+				
+				return;
+			}
+		}
 	}
 	
 	// No changes will be saved unless this method is called
@@ -76,7 +138,7 @@ public class ClientFileIO {
 			
 			// Write a line for every element in ArrayList
 			for(int i = 0; i != clientList.size(); ++i) {
-				bw.write(i + " " + clientList.get(i));
+				bw.write(clientList.get(i).getID() + " " + clientList.get(i).getName());
 				bw.newLine();
 			}
 			

@@ -13,6 +13,8 @@ public class Main {
 	    clientDB.addClient("Benito Camelo");
 	    
 	    clientDB.removeClient("Benito Camelo");
+	    
+	    clientDB.addClient("Flex Plexico");
 	    	    
 	    clientDB.writeChanges();
 	    
