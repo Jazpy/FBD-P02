@@ -49,6 +49,9 @@ public class ClientFileIO {
 				clientList.add(curr);
 			}
 			
+			// Get ready for next client
+			++nextID;
+			
 			br.close();
 		} catch (IOException e) {
 			// Print error if file could not be read
@@ -78,6 +81,7 @@ public class ClientFileIO {
 				return;
 		}
 		
+		System.out.println(toAdd + nextID);
 		Client add = new Client(nextID, toAdd);
 		
 		clientList.add(add);
@@ -113,9 +117,9 @@ public class ClientFileIO {
 		Iterator<Client> iter = clientList.iterator();
 		
 		while (iter.hasNext()){
-			Client curr = iter.next();
+			Client curr = iter.next(); 
 			
-			if(curr.getName() == name) {
+			if(curr.getName().equals(name)) {
 				clientList.remove(curr);
 				
 				if(!iter.hasNext())
