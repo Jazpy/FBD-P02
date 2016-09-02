@@ -1,5 +1,6 @@
 package Taqueria;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -71,6 +72,10 @@ public class ClientFileIO {
 		
 		return null;
 	}
+
+	public ArrayList<Client> getClients() {
+		return clientList;
+	}
 	
 	public void addClient(String toAdd) {
 		Iterator<Client> iter = clientList.iterator();
@@ -81,7 +86,7 @@ public class ClientFileIO {
 				return;
 		}
 		
-		System.out.println(toAdd + nextID);
+		//System.out.println(toAdd + nextID);
 		Client add = new Client(nextID, toAdd);
 		
 		clientList.add(add);

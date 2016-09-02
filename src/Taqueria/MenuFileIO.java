@@ -43,10 +43,40 @@ public class MenuFileIO {
             // Print error if file could not be read
             e.printStackTrace();
 	}
-		
 	return menu;
-    } 
-    
+    }
+
+    //Return ArrayList of all menu orders
+    public ArrayList<Menu> getOrders() {
+        ArrayList<Menu> menu = new ArrayList<>();
+        try {
+            // Set up file reading
+            File file = new File(filename);
+
+            FileReader in = new FileReader(file.getAbsolutePath());
+
+            // Read the file
+            BufferedReader br = new BufferedReader(in);
+            String line;
+
+            while ((line = br.readLine()) != null && !line.equals("")) {
+                // Tokenize string with split, since we have delimiters in place
+                String[] tokens = line.split(Pattern.quote(","));
+
+                // Use tokens to create a Menu object
+                Menu dish2 = new Menu(Integer.parseInt(tokens[0]),
+                        tokens[1],
+                        Double.parseDouble(tokens[2]));
+                menu.add(dish2);
+            }
+            br.close();
+        } catch (IOException e) {
+            // Print error if file could not be read
+            e.printStackTrace();
+        }
+        return menu;
+    }
+
     public void changePrice(Menu toChange){
          ArrayList<Menu> menu = new ArrayList<>();
         try{
