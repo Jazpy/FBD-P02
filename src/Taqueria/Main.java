@@ -117,6 +117,50 @@ public class Main {
 	}
 
 	private static void actualizaArchivo(){
+		System.out.println("Elija la opción escribiendo el número correspondiente:");
+		System.out.println("1. Agregar una orden");
+		System.out.println("2. Agregar un cliente");
+		System.out.println("3. Eliminar un cliente");
+		System.out.println("4. Cancelar");
+
+		Integer opcion = Integer.parseInt(reader.next().trim());
+		try {
+			switch (opcion) {
+				case 1:
+					int[] ord = new int[4];
+					System.out.println("Escriba el id del cliente");
+					ord[0] = Integer.parseInt(reader.next().trim());
+					System.out.println("Escriba el id del platillo");
+					ord[1] = Integer.parseInt(reader.next().trim());
+					System.out.println("Escriba la cantidad del platillo:");
+					ord[2] = Integer.parseInt(reader.next().trim());
+					System.out.println("Escriba el total del costo de la orden:");
+					ord[3] = Integer.parseInt(reader.next().trim());
+					new OrderFileIO("db/Ordenes.txt").addOrder(new Order(ord[0], ord[1], ord[2], ord[3]));
+					break;
+				case 2:
+					String nombre;
+					System.out.println("Escriba el nombre del cliente");
+					nombre = reader.next().trim();
+					new ClientFileIO("db/Clientes.txt").addClient(nombre);
+					break;
+				case 3:
+					System.out.println("Escriba el id del cliente:");
+					int id = Integer.parseInt(reader.next().trim());
+					ClientFileIO clientfileio = new ClientFileIO("db/Clientes.txt");
+					System.out.println(clientfileio.getClient(id).getName());
+					clientfileio.removeClient(clientfileio.getClient(id));
+					break;
+				case 4:
+					break;
+				default:
+					System.out.println("Opción inválida :(");
+					break;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
 
 	}
 
