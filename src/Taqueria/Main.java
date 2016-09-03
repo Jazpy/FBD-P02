@@ -72,7 +72,7 @@ public class Main {
 						break;
 					case 5: System.out.println("Bye bye");
 						break;
-					default: System.out.println("Opción inválida :(");
+					default: System.out.println("Opción inválida.");
 						break;
 				}
 			}catch(NumberFormatException e){
@@ -121,7 +121,8 @@ public class Main {
 		System.out.println("1. Agregar una orden");
 		System.out.println("2. Agregar un cliente");
 		System.out.println("3. Eliminar un cliente");
-		System.out.println("4. Cancelar");
+		System.out.println("4. Cambiar nombre de un cliente");
+		System.out.println("5. Cancelar");
 
 		Integer opcion = Integer.parseInt(reader.next().trim());
 		try {
@@ -150,11 +151,22 @@ public class Main {
 					ClientFileIO clientfileio = new ClientFileIO("db/Clientes.txt");
 					System.out.println(clientfileio.getClient(id).getName());
 					clientfileio.removeClient(clientfileio.getClient(id));
+					clientfileio.writeChanges();
 					break;
 				case 4:
+					System.out.println("Escriba el id del cliente:");
+					int id2 = Integer.parseInt(reader.next().trim());
+					ClientFileIO clientfileio2 = new ClientFileIO("db/Clientes.txt");
+					System.out.println(clientfileio2.getClient(id2).getName());
+					System.out.println("Escriba el nuevo nombre:");
+					String name = reader.next().trim();
+					clientfileio2.getClient(id2).setName(name);
+					clientfileio2.writeChanges();
+					break;
+				case 5:
 					break;
 				default:
-					System.out.println("Opción inválida :(");
+					System.out.println("Opción inválida");
 					break;
 			}
 		}catch(Exception e){
